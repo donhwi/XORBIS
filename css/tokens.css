@@ -1,0 +1,29 @@
+:root {
+  --bg: #000;
+  --surface: #0b0b0b;
+  --surface-2: #151515;
+  --line: #262626;
+  --tag: #222;
+
+  --text: #fff;
+  --text-2: #bfbfbf;
+  --caption: #8a8a8a;
+
+  --mint: #2ef2c4;
+  --mint-dim: rgba(46, 242, 196, .28);
+  --mint-faint: rgba(46, 242, 196, .08);
+  --mint-deep: #0b2a24;
+
+  --font-display: "Montserrat", "Pretendard Variable", Pretendard, sans-serif;
+  --font-body: "Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", sans-serif;
+
+  --gutter: clamp(16px, 4vw, 64px);
+  --maxw: 1360px;
+  --section-y: clamp(96px, 14vw, 200px);
+
+  /* 모서리: 태그·버튼은 pill, 나머지 면은 모두 0 */
+  --radius-pill: 999px;
+
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-ui: cubic-bezier(.33, 1, .68, 1);
+}
