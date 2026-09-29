@@ -68,6 +68,8 @@
       var x = 330 + col * 84, y = 40 + row * 78;
       var on = i < 14;
       var g = el('g', { class: 'dev ' + (on ? 'on' : 'off'), 'data-cx': x, 'data-cy': y + 25 }, devG);
+      // 불투명 바탕: 미러링 선이 기기 뒤로 지나가게 가린다
+      el('rect', { x: x, y: y, width: 64, height: 50, fill: '#000', class: 'dev__base' }, g);
       el('rect', on
         ? { x: x, y: y, width: 64, height: 50, fill: 'rgba(46,242,196,.08)', stroke: '#2EF2C4', 'stroke-width': 1.2 }
         : { x: x, y: y, width: 64, height: 50, fill: 'none', stroke: '#444', 'stroke-width': 1, 'stroke-dasharray': '3 3' }, g);
@@ -88,6 +90,25 @@
       n.style.setProperty('--my', (e.clientY - b.top) + 'px');
     });
   });
+
+  // 계룡 4종: 도면이 포인터를 따라 가로로 움직이고, 움직임 방향으로 살짝 기운다
+  var vr4 = $('.vr4');
+  if (vr4 && window.matchMedia('(hover: hover)').matches) {
+    $$('.vr4 li', vr4).forEach(function (li) {
+      var img = $('.vr4__img', li), lastX = null;
+      if (!img) return;
+      li.addEventListener('pointermove', function (e) {
+        var ob = vr4.getBoundingClientRect(), lb = li.getBoundingClientRect(), w = img.getBoundingClientRect().width;
+        var x = e.clientX - lb.left - w / 2;
+        x = Math.max(ob.left - lb.left, Math.min(ob.right - lb.left - w, x));
+        var rot = lastX === null ? 0 : Math.max(-4, Math.min(4, (e.clientX - lastX) * .4));
+        lastX = e.clientX;
+        li.style.setProperty('--px', x + 'px');
+        li.style.setProperty('--rot', rot + 'deg');
+      });
+      li.addEventListener('pointerleave', function () { lastX = null; li.style.setProperty('--rot', '0deg'); });
+    });
+  }
 
   // 한전 미러링 경로
   var mirror = $('#svg-kepco .mirror');
@@ -409,62 +430,94 @@
       });
     })();
 
-    /* DMZ ③ 트리거 → 이벤트 → 네비: 신호가 경로를 따라 흐른다 */
+    /* DMZ ③ 두 팀이 각자 트리거 → 이벤트 → 네비를 지나 마지막 공간에서 만난다 */
     (function () {
       var svg = $('#svg-flow'); if (!svg) return;
-      var route = $('#route', svg), pulse = $('.pulse', svg);
-      var nodes = { trigger: $('.n-trigger', svg), event: $('.n-event', svg), nav: $('.n-nav', svg) };
       var steps = $$('#dmz-flow .steps li');
-      var len = route.getTotalLength();
-      gsap.set(route, { opacity: 0 });
-      gsap.set([nodes.trigger, nodes.event, nodes.nav], { opacity: .25 });
-      var o = { p: 0 };
-      function light(key, idx) {
-        return function () {
-          gsap.to(nodes[key], { opacity: 1, duration: .3 });
-          steps.forEach(function (s, i) { s.classList.toggle('is-lit', i === idx); });
-        };
+      var routes = { A: $('#routeA', svg), B: $('#routeB', svg) };
+      var lens = { A: routes.A.getTotalLength(), B: routes.B.getTotalLength() };
+      var dots = { A: $$('.ta', svg), B: $$('.tb', svg) };
+      var pos = { A: { p: 0 }, B: { p: 0 } };
+      // 트리거와 네비 지점까지의 경로 비율
+      var at = { A: 305 / lens.A, B: 305 / lens.B };
+      var nodes = $$('.node', svg), meet = $$('.meet, .meet-label', svg), fin = $('.final', svg);
+      function node(kind, team) { return $('.n-' + kind + '[data-team="' + team + '"]', svg); }
+      function place(team) {
+        var L = lens[team], d = pos[team].p * L;
+        dots[team].forEach(function (c, i) {
+          var pt = routes[team].getPointAtLength(Math.max(0, d - i * 16));
+          c.setAttribute('cx', pt.x); c.setAttribute('cy', pt.y);
+        });
       }
-      var loop = gsap.timeline({ repeat: -1, repeatDelay: 1.2, paused: true });
-      loop.set([nodes.trigger, nodes.event, nodes.nav], { opacity: .25 })
-        .set(pulse, { opacity: 1 })
-        .to(o, {
-          p: 1, duration: 3.4, ease: 'none',
-          onUpdate: function () { var pt = route.getPointAtLength(o.p * len); pulse.setAttribute('cx', pt.x); pulse.setAttribute('cy', pt.y); }
-        })
-        .call(light('trigger', 0), null, 3.4 * .44)
-        .call(light('event', 1), null, 3.4 * .72)
-        .fromTo($$('path', nodes.event), { scale: .4, transformOrigin: '50% 50%' }, { scale: 1, duration: .4, ease: 'back.out(2)', stagger: .08 }, 3.4 * .72)
-        .call(light('nav', 2), null, 3.4)
-        .to(pulse, { opacity: 0, duration: .3 }, 3.4);
-      gsap.to(route, { opacity: .75, duration: 1, scrollTrigger: { trigger: '#dmz-flow', start: 'top 70%' } });
+      function lit(idx) { return function () { steps.forEach(function (s, i) { s.classList.toggle('is-lit', i === idx); }); }; }
+      function arrive(team) {
+        return gsap.timeline()
+          .to(node('trigger', team), { opacity: 1, duration: .25 })
+          .call(lit(0))
+          .to(node('event', team), { opacity: 1, duration: .2 }, .3)
+          .fromTo($$('path', node('event', team)), { scale: .3, transformOrigin: '50% 50%' }, { scale: 1, duration: .4, ease: 'back.out(2.4)', stagger: .07 }, .3)
+          .call(lit(1), null, .3)
+          .to(node('nav', team), { opacity: 1, duration: .25 }, .7)
+          .call(lit(2), null, .7);
+      }
+      function walk(team, to, dur) {
+        return gsap.to(pos[team], { p: to, duration: dur, ease: 'power1.inOut', onUpdate: function () { place(team); } });
+      }
+      gsap.set('#svg-flow .froute', { opacity: 0 });
+      var loop = gsap.timeline({ repeat: -1, repeatDelay: .8, paused: true });
+      loop.set(nodes, { opacity: .25 })
+        .set(meet, { opacity: 0 })
+        .set(fin, { opacity: .6 })
+        .set([pos.A, pos.B], { p: 0 })
+        .call(function () { place('A'); place('B'); lit(-1)(); })
+        .set(dots.A.concat(dots.B), { opacity: 1 })
+        // 출발 지점과 걸리는 시간이 서로 다르다
+        .add(walk('A', at.A, 1.5), 0)
+        .add(walk('B', at.B, 2.1), .2)
+        .add(arrive('A'), 1.5)
+        .add(arrive('B'), 2.3)
+        .add(walk('A', 1, 1.4), 2.5)
+        .add(walk('B', 1, 1.5), 3.3)
+        // 먼저 온 팀이 기다리고, 네 명이 모이면 마지막 공간이 열린다
+        .to(fin, { opacity: 1, duration: .3 }, 4.8)
+        .fromTo('#svg-flow .meet', { opacity: 1, scale: .4, transformOrigin: '50% 50%' }, { scale: 1, duration: .6, ease: 'expo.out' }, 4.8)
+        .to('#svg-flow .meet-label', { opacity: 1, duration: .3 }, 4.9)
+        .call(lit(-1), null, 4.8)
+        .to({}, { duration: 1.6 })
+        .to(dots.A.concat(dots.B).concat(meet), { opacity: 0, duration: .4 });
+      gsap.to('#svg-flow .froute', { opacity: .7, duration: 1, scrollTrigger: { trigger: '#dmz-flow', start: 'top 70%' } });
       ScrollTrigger.create({
         trigger: '#dmz-flow', start: 'top 70%', end: 'bottom 20%',
         onToggle: function (s) { s.isActive ? loop.play() : loop.pause(); }
       });
     })();
 
-    /* DMZ ④ 손목 네비: 컨트롤러를 90° 꺾으면 네비가 뜬다 */
+    /* DMZ ④ 손목 네비: 컨트롤러를 90° 꺾으면 네비가 뜨고, 되돌리면 사라진다. 보이는 동안 자동 반복 */
     (function () {
       var sec = $('#dmz-wrist'); if (!sec) return;
       var ang = $('[data-angle]'), a = { v: 0 };
-      var st = isDesk
-        ? { trigger: sec, start: 'top top', end: '+=130%', pin: true, scrub: 0.6 }
-        : { trigger: '.wrist__stage', start: 'top 70%', end: 'bottom 40%', scrub: 0.6 };
-      var tl = gsap.timeline({ scrollTrigger: st });
-      tl.to('.wrist__front', { rotation: 90, duration: 1, ease: 'power2.inOut' })
-        .to(a, { v: 90, duration: 1, ease: 'power2.inOut', onUpdate: function () { ang.textContent = Math.round(a.v); } }, 0)
-        .to('.wrist__front', { opacity: 0, duration: .3 }, .75)
-        .fromTo('.wrist__side', { opacity: 0, scale: .96 }, { opacity: 1, scale: 1, duration: .35 }, .8)
-        .to('.wrist__beam', { opacity: 1, duration: .3 }, 1.15)
-        .fromTo('.wrist__panel', { opacity: 0, scale: .6, transformOrigin: '50% 100%' }, { opacity: 1, scale: 1, duration: .4, ease: 'back.out(2)' }, 1.25)
-        .to({}, { duration: .4 });
+      gsap.set('.wrist__side', { opacity: 0, rotationX: 70 });
+      gsap.set('.wrist__beam', { opacity: 0, scaleY: 0, transformOrigin: '50% 100%' });
+      gsap.set('.wrist__panel', { opacity: 0, scale: .5, transformOrigin: '50% 100%' });
+      var tl = gsap.timeline({ paused: true, repeat: -1, yoyo: true, repeatDelay: .5 });
+      tl.to({}, { duration: .5 })
+        .to('.wrist__front', { rotation: 90, duration: 1.1, ease: 'power2.inOut' })
+        .to(a, { v: 90, duration: 1.1, ease: 'power2.inOut', onUpdate: function () { ang.textContent = Math.round(a.v); } }, '<')
+        .to('.wrist__front', { opacity: 0, duration: .35, ease: 'none' }, '-=.3')
+        .to('.wrist__side', { opacity: 1, rotationX: 0, duration: .6, ease: 'power3.out' }, '<')
+        .to('.wrist__beam', { opacity: 1, scaleY: 1, duration: .45, ease: 'power2.out' }, '-=.1')
+        .to('.wrist__panel', { opacity: 1, scale: 1, duration: .5, ease: 'back.out(2.2)' }, '-=.3')
+        .to({}, { duration: 1.8 });
+      ScrollTrigger.create({
+        trigger: '.wrist__stage', start: 'top 85%', end: 'bottom 15%',
+        onToggle: function (s) { s.isActive ? tl.play() : tl.pause(); }
+      });
     })();
 
     /* 엘리스: 프레임이 스크롤에 맞춰 넓어진다 */
-    gsap.fromTo('.player__frame', { clipPath: isDesk ? 'inset(10% 12% 10% 12%)' : 'inset(4% 4% 4% 4%)' }, {
+    gsap.fromTo('.player__frame', { clipPath: isDesk ? 'inset(6% 6% 6% 6%)' : 'inset(4% 4% 4% 4%)' }, {
       clipPath: 'inset(0% 0% 0% 0%)', ease: 'none',
-      scrollTrigger: { trigger: '.player', start: 'top 95%', end: 'center 55%', scrub: 0.5 }
+      scrollTrigger: { trigger: '.player', start: 'top 95%', end: 'top 45%', scrub: 0.5 }
     });
     $$('[data-count-to]').forEach(function (n) {
       var to = +n.getAttribute('data-count-to'), o = { v: 0 };
@@ -487,7 +540,7 @@
         .from('#svg-kepco .branch', { opacity: 0, duration: .3, stagger: .05 }, .7)
         .from(devs, { opacity: 0, scale: .7, transformOrigin: '50% 50%', duration: .5, stagger: { each: .04, from: 'start' }, ease: 'back.out(1.6)' }, .8)
         .from('#svg-kepco .fn', { opacity: 0, x: -10, duration: .4, stagger: .1 }, .6);
-      var breathe = gsap.to(devs.filter(function (g) { return g.classList.contains('on'); }).map(function (g) { return g.firstChild; }), {
+      var breathe = gsap.to(devs.filter(function (g) { return g.classList.contains('on'); }).map(function (g) { return g.children[1]; }), {
         fillOpacity: .25, duration: 1.4, yoyo: true, repeat: -1, ease: 'sine.inOut', stagger: { each: .2, from: 'random' }, paused: true
       });
       ScrollTrigger.create({ trigger: svg, start: 'top 80%', end: 'bottom 10%', onToggle: function (s) { s.isActive ? breathe.play() : breathe.pause(); } });

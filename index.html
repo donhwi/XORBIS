@@ -17,6 +17,10 @@
 <script>if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('js-motion')</script>
 </head>
 <body>
+<svg class="sr-defs" width="0" height="0" aria-hidden="true" style="position:absolute">
+  <filter id="outline-15" x="-5%" y="-10%" width="110%" height="120%"><feMorphology in="SourceAlpha" operator="erode" radius="1.5" result="e"/><feComposite in="SourceGraphic" in2="e" operator="out"/></filter>
+  <filter id="outline-1" x="-5%" y="-10%" width="110%" height="120%"><feMorphology in="SourceAlpha" operator="erode" radius="1" result="e"/><feComposite in="SourceGraphic" in2="e" operator="out"/></filter>
+</svg>
 
 <!-- 공용 SVG 정의: 발광 필터, 스캔라인, 인물 -->
 <svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
@@ -45,7 +49,7 @@
 <header class="nav" data-nav>
   <a class="nav__name" href="#top">LEE DONHWI</a>
   <nav class="nav__links" aria-label="섹션">
-    <a href="#work" data-link="work">WORK</a>
+    <a href="#work" data-link="work">PROJECT</a>
     <a href="#others" data-link="others">OTHERS</a>
     <a href="#about" data-link="about">ABOUT</a>
     <a href="#contact" data-link="contact">CONTACT</a>
@@ -95,10 +99,10 @@
     </div>
   </div>
 
-  <!-- WORK INDEX -->
+  <!-- MAIN PROJECT -->
   <section class="section work" id="work" data-section="work">
     <div class="wrap">
-      <h2 class="h2"><span class="line"><span>#WORK</span></span></h2>
+      <h2 class="h2"><span class="line"><span>#MAIN PROJECT</span></span></h2>
       <div class="tiles">
         <a class="tile tile--wide" href="#case-gyeryong" data-spot>
           <div class="tile__media tile__media--holo">
@@ -112,32 +116,38 @@
                 <use href="#player" transform="translate(380 214) scale(0.8)"/>
               </g>
             </svg>
+            <div class="tile__over" aria-hidden="true"><p>병영체험관 VR 콘텐츠 4종의 콘텐츠·시스템 기획을 맡았습니다. 4인 멀티 가상모의전투 UNDERGROUND DMZ가 대표작입니다.</p><span class="tile__go">VIEW PROJECT <i>→</i></span></div>
           </div>
           <div class="tile__meta">
             <span class="tile__no">01</span>
             <strong>계룡 병영체험관 VR</strong>
             <span class="tile__sub" data-decode-hover>UNREAL · VIVE · 4 VR CONTENTS</span>
+            <p class="tile__desc">병영체험관 VR 콘텐츠 4종의 콘텐츠·시스템 기획을 맡았습니다. 4인 멀티 가상모의전투 UNDERGROUND DMZ가 대표작입니다.</p>
           </div>
         </a>
         <a class="tile" href="#case-alice" data-spot data-preview>
           <div class="tile__media">
             <img src="assets/img/scenes/s4.jpg" alt="엘리스 VR 롤러코스터 인게임 장면" loading="lazy" width="960" height="540">
+            <div class="tile__over" aria-hidden="true"><p>이상한 나라의 앨리스를 모티프로 한 2축 모션 VR 롤러코스터입니다. 컨셉, 코스, 사운드 기획에 참여했습니다.</p><span class="tile__go">VIEW PROJECT <i>→</i></span></div>
           </div>
           <div class="tile__meta">
             <span class="tile__no">02</span>
             <strong>엘리스 VR 롤러코스터</strong>
             <span class="tile__sub" data-decode-hover>COEX · 2-AXIS MOTION</span>
+            <p class="tile__desc">이상한 나라의 앨리스를 모티프로 한 2축 모션 VR 롤러코스터입니다. 컨셉, 코스, 사운드 기획에 참여했습니다.</p>
           </div>
         </a>
         <a class="tile" href="#case-kepco" data-spot>
           <div class="tile__media tile__media--type">
             <div class="devgrid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="off"></i><i class="off"></i><i class="off"></i><i class="off"></i><i class="off"></i><i class="off"></i></div>
             <span class="big">14<small>/20</small></span>
+            <div class="tile__over" aria-hidden="true"><p>강사 한 명이 VR 기기 최대 20대를 관제하는 콘솔을 기획했습니다. 외부 콘텐츠 20종을 런처 하나로 묶었습니다.</p><span class="tile__go">VIEW PROJECT <i>→</i></span></div>
           </div>
           <div class="tile__meta">
             <span class="tile__no">03</span>
             <strong>한전 VR 안전교육 관제 허브</strong>
             <span class="tile__sub" data-decode-hover>CONTROL CONSOLE · 20 DEVICES</span>
+            <p class="tile__desc">강사 한 명이 VR 기기 최대 20대를 관제하는 콘솔을 기획했습니다. 외부 콘텐츠 20종을 런처 하나로 묶었습니다.</p>
           </div>
         </a>
         <a class="tile" href="#case-biopop" data-spot>
@@ -151,11 +161,13 @@
                 <circle cx="30" cy="102" r="5"/><circle cx="80" cy="102" r="5"/><circle cx="120" cy="102" r="5"/><circle cx="170" cy="102" r="5"/>
               </g>
             </svg>
+            <div class="tile__over" aria-hidden="true"><p>헬스케어 디바이스 서비스의 운영 어드민을 기획했습니다. 권한 3계층과 테넌트 격리를 설계했습니다.</p><span class="tile__go">VIEW PROJECT <i>→</i></span></div>
           </div>
           <div class="tile__meta">
             <span class="tile__no">04</span>
             <strong>BIOPOP 운영 어드민</strong>
             <span class="tile__sub" data-decode-hover>3-TIER RBAC · MULTI TENANT</span>
+            <p class="tile__desc">헬스케어 디바이스 서비스의 운영 어드민을 기획했습니다. 권한 3계층과 테넌트 격리를 설계했습니다.</p>
           </div>
         </a>
       </div>
@@ -168,21 +180,33 @@
       <header class="case__head">
         <h2 class="h2"><span class="line"><span>#GYERYONG</span></span><span class="line"><span>MILITARY VR</span></span></h2>
         <div class="case__side">
-          <p class="case__meta">2023.01 ~ 2023.11 · Unreal Engine · VIVE</p>
+          <p class="case__meta">2023.01 ~ 2023.11 · VR 콘텐츠 4종</p>
           <p class="case__lead">계룡 병영체험관에 들어간 VR 콘텐츠 4종의 콘텐츠 기획과 시스템 기획을 맡았습니다. 컨셉, 시나리오, 연출, UI까지 담당했습니다. 이 중 가장 공들인 작품은 4인 멀티 가상모의전투 UNDERGROUND DMZ입니다.</p>
+          <dl class="spec">
+            <div><dt>ENGINE</dt><dd>Unreal Engine</dd></div>
+            <div><dt>PLATFORM</dt><dd>HTC VIVE</dd></div>
+            <div><dt>ROLE</dt><dd>콘텐츠·시스템 기획, 컨셉·시나리오·연출·UI</dd></div>
+          </dl>
         </div>
       </header>
 
       <ol class="vr4">
-        <li><span class="vr4__no">01</span><strong>ARMY TANK VR</strong><span>육군 전차</span></li>
-        <li><span class="vr4__no">02</span><strong>NAVY SUBMARINE VR</strong><span>해군 잠수함</span></li>
-        <li><span class="vr4__no">03</span><strong>AIR FORCE FIGHTER VR</strong><span>공군 전투기</span></li>
-        <li class="is-key"><span class="vr4__no">04</span><strong>UNDERGROUND DMZ</strong><span>가상모의전투 · 4인 멀티</span></li>
+        <li><span class="vr4__no">01</span><svg class="vr4__img" viewBox="0 0 240 180" aria-hidden="true"><rect class="bg" width="240" height="180"/><path class="grid" d="M0 45H240M0 90H240M0 135H240M60 0V180M120 0V180M180 0V180"/><text class="lb" x="12" y="20">ARMY · SIDE VIEW</text><g class="art"><path class="d" style="--i:0" pathLength="1" d="M40 118H196A16 16 0 0 1 196 150H40A16 16 0 0 1 40 118Z"/><circle class="d" style="--i:1" pathLength="1" cx="50" cy="134" r="9"/><circle class="d" style="--i:1" pathLength="1" cx="78" cy="134" r="9"/><circle class="d" style="--i:1" pathLength="1" cx="106" cy="134" r="9"/><circle class="d" style="--i:1" pathLength="1" cx="134" cy="134" r="9"/><circle class="d" style="--i:1" pathLength="1" cx="162" cy="134" r="9"/><circle class="d" style="--i:1" pathLength="1" cx="190" cy="134" r="9"/><path class="d" style="--i:2" pathLength="1" d="M30 118L44 98H190L212 110L206 118Z"/><path class="d" style="--i:3" pathLength="1" d="M78 98L90 78H150L166 88V98"/><path class="d" style="--i:4" pathLength="1" d="M166 86H226V92H166"/><path class="d" style="--i:5" pathLength="1" d="M112 78V70H132V78M96 78L90 46"/></g><rect class="scan" width="240" height="2"/></svg><strong>ARMY TANK VR</strong><span>육군 전차</span></li>
+        <li><span class="vr4__no">02</span><svg class="vr4__img" viewBox="0 0 240 180" aria-hidden="true"><rect class="bg" width="240" height="180"/><path class="grid" d="M0 45H240M0 90H240M0 135H240M60 0V180M120 0V180M180 0V180"/><text class="lb" x="12" y="20">NAVY · SIDE VIEW</text><g class="art"><path class="d" style="--i:0" pathLength="1" d="M26 110C26 92 50 86 80 86H176C200 86 216 96 222 110C216 124 200 132 176 132H80C50 132 26 128 26 110Z"/><path class="d" style="--i:1" pathLength="1" d="M104 86L110 58H146L152 86"/><path class="d" style="--i:2" pathLength="1" d="M96 72H112M144 72H160M132 58V40H142"/><path class="d" style="--i:3" pathLength="1" d="M214 104L230 92V128L214 116"/><path class="d" style="--i:4" pathLength="1" d="M20 98A18 18 0 0 0 20 122M12 90A30 30 0 0 0 12 130"/><path class="d" style="--i:5" pathLength="1" d="M60 120H190"/></g><rect class="scan" width="240" height="2"/></svg><strong>NAVY SUBMARINE VR</strong><span>해군 잠수함</span></li>
+        <li><span class="vr4__no">03</span><svg class="vr4__img" viewBox="0 0 240 180" aria-hidden="true"><rect class="bg" width="240" height="180"/><path class="grid" d="M0 45H240M0 90H240M0 135H240M60 0V180M120 0V180M180 0V180"/><text class="lb" x="12" y="20">AIR FORCE · TOP VIEW</text><g class="art"><path class="d" style="--i:0" pathLength="1" d="M22 90L48 84H176C200 84 216 88 228 90C216 92 200 96 176 96H48Z"/><path class="d" style="--i:1" pathLength="1" d="M150 86L96 30H80L104 86M150 94L96 150H80L104 94"/><path class="d" style="--i:2" pathLength="1" d="M60 86L36 60H28L40 86M60 94L36 120H28L40 94"/><path class="d" style="--i:3" pathLength="1" d="M178 88C186 86 196 88 202 90C196 92 186 94 178 92Z"/><path class="d" style="--i:4" pathLength="1" d="M118 72V108"/></g><rect class="scan" width="240" height="2"/></svg><strong>AIR FORCE FIGHTER VR</strong><span>공군 전투기</span></li>
+        <li class="is-key"><span class="vr4__no">04</span><svg class="vr4__img" viewBox="0 0 240 180" aria-hidden="true"><rect class="bg" width="240" height="180"/><path class="grid" d="M0 45H240M0 90H240M0 135H240M60 0V180M120 0V180M180 0V180"/><text class="lb" x="12" y="20">DMZ · 4 PLAYERS</text><g class="art"><path class="d" style="--i:0" pathLength="1" d="M30 24H210V160H30Z"/><path class="d" style="--i:1" pathLength="1" d="M30 24L100 72M210 24L140 72M210 160L140 110M30 160L100 110"/><path class="d" style="--i:2" pathLength="1" d="M70 50H170V134H70Z"/><path class="d" style="--i:3" pathLength="1" d="M100 72H140V110H100Z"/><path class="d" style="--i:4" pathLength="1" d="M86 148L112 124L118 112M154 148L128 124L122 112"/></g><g class="dots"><circle class="ta" cx="80" cy="146" r="4"/><circle class="ta" cx="92" cy="152" r="4"/><circle class="tb" cx="148" cy="152" r="4"/><circle class="tb" cx="160" cy="146" r="4"/></g><rect class="scan" width="240" height="2"/></svg><strong>UNDERGROUND DMZ</strong><span>가상모의전투 · 4인 멀티</span></li>
       </ol>
 
       <div class="dmz-head">
         <h3 class="h3"><span class="line"><span>#UNDERGROUND DMZ</span></span></h3>
-        <p class="case__meta">11인 팀 · 시스템·전투·UI 기획 전담</p>
+        <div class="dmz-head__side">
+          <p class="case__meta">11인 팀</p>
+            <dl class="spec">
+              <div><dt>ENGINE</dt><dd>Unreal Engine</dd></div>
+              <div><dt>PLATFORM</dt><dd>HTC VIVE · 백팩 PC</dd></div>
+              <div><dt>ROLE</dt><dd>시스템·전투·UI 기획, 언리얼 레벨 디자인</dd></div>
+            </dl>
+        </div>
       </div>
 
       <!-- ① 플레이 구조 -->
@@ -224,7 +248,7 @@
           </svg>
         </div>
         <div class="dive__text">
-          <p class="dive__label">PLAY STRUCTURE</p>
+          <p class="dive__label"><span class="dive__no">01</span>PLAY STRUCTURE</p>
           <h4>4인 멀티 · 10×10m · 이동형 PC</h4>
           <p>네 명이 백팩 PC를 메고 실제 공간을 걸으며 플레이합니다. 두 명씩 P1, P2 두 팀으로 나뉘어 같은 층의 서로 다른 동선을 진행합니다.</p>
           <p>실제 공간은 10×10m로 고정되어 있어서, 가상 맵을 0.5m 격자로 나눠 벽, 낮은 벽, 이동 지역, 문을 배치했습니다. 층은 지상 1층, 지하 1층, 지하 2층, 지하 화물층으로 구성했습니다.</p>
@@ -234,7 +258,7 @@
       <!-- ② 두 동선 동기화 -->
       <article class="dive dive--wide" id="dmz-sync">
         <div class="dive__text">
-          <p class="dive__label">ROUTE SYNC</p>
+          <p class="dive__label"><span class="dive__no">02</span>ROUTE SYNC</p>
           <h4>두 동선을 7개의 락으로 맞췄습니다</h4>
           <p>두 팀은 같은 층에서 서로 다른 동선을 진행합니다. 두 동선이 만나야 하는 지점 7곳에 락을 걸어, 먼저 도착한 팀은 늦은 팀이 올 때까지 다음 구역으로 넘어가지 못하게 했습니다.</p>
           <p>기다리는 동안에는 먼저 도착한 팀 쪽에 적을 다시 생성해 플레이가 멈추지 않게 했습니다.</p>
@@ -267,41 +291,68 @@
       <!-- ③ 트리거 → 이벤트 → 네비 -->
       <article class="dive" id="dmz-flow">
         <div class="dive__fig">
-          <svg class="holo" id="svg-flow" viewBox="0 0 760 330" role="img" aria-label="지하 2층 1구역을 단순화한 도식. 트리거를 밟으면 이벤트가 실행되고 다음 지점 네비가 켜진다">
+          <svg class="holo" id="svg-flow" viewBox="0 0 760 330" role="img" aria-label="2인씩 두 팀이 서로 다른 구역에서 출발해 각자 트리거, 이벤트, 네비를 거친 뒤 마지막 공간에서 만나는 도식">
             <rect x="0" y="0" width="760" height="330" fill="url(#scan)"/>
             <g fill="none" stroke="#2EF2C4" stroke-width="1" stroke-dasharray="5 5" opacity=".55">
-              <rect x="40" y="40" width="220" height="250"/>
-              <path d="M260 135 H440 M260 195 H440"/>
-              <rect x="440" y="40" width="280" height="250"/>
+              <rect x="30" y="30" width="170" height="110"/>
+              <rect x="30" y="190" width="170" height="110"/>
+              <rect x="290" y="30" width="140" height="110"/>
+              <rect x="290" y="190" width="140" height="110"/>
+              <path d="M200 70 H290 M200 100 H290 M200 230 H290 M200 260 H290 M430 70 H520 M430 100 H520 M430 230 H520 M430 260 H520"/>
             </g>
-            <text x="50" y="30" font-size="10" fill="#8a8a8a">B2 · ZONE 1 (단순화)</text>
-            <path id="route" data-draw fill="none" stroke="#2EF2C4" stroke-width="1.4" stroke-dasharray="3 5" opacity=".75" d="M110 260 L110 165 L330 165 L525 165 L525 95 L650 95"/>
-            <g class="node n-trigger">
-              <rect x="300" y="140" width="56" height="50" fill="rgba(46,242,196,.08)" stroke="#2EF2C4" stroke-width="1.4"/>
-              <text x="328" y="128" font-size="11" font-weight="800" fill="#2EF2C4" text-anchor="middle">TRIGGER</text>
+            <rect class="final" x="520" y="30" width="210" height="270" fill="rgba(46,242,196,.04)" stroke="#2EF2C4" stroke-width="1.2" stroke-dasharray="5 5" opacity=".6"/>
+            <text x="30" y="20" font-size="10" fill="#8a8a8a">B2 · ZONE 1 (단순화)</text>
+            <text x="625" y="20" font-size="11" font-weight="800" fill="#2EF2C4" text-anchor="middle">FINAL ROOM</text>
+            <path class="froute" id="routeA" fill="none" stroke="#2EF2C4" stroke-width="1.4" stroke-dasharray="3 5" opacity=".75" d="M80 110 L80 85 L360 85 L475 85 L610 150"/>
+            <path class="froute" id="routeB" fill="none" stroke="#fff" stroke-width="1.4" stroke-dasharray="3 5" opacity=".6" d="M80 270 L80 245 L360 245 L475 245 L640 200"/>
+            <g class="node n-trigger" data-team="A">
+              <rect x="335" y="62" width="50" height="46" fill="rgba(46,242,196,.08)" stroke="#2EF2C4" stroke-width="1.4"/>
+              <text x="360" y="54" font-size="10" font-weight="800" fill="#2EF2C4" text-anchor="middle">TRIGGER</text>
             </g>
-            <g class="node n-event" stroke="#2EF2C4" stroke-width="1.4" fill="#000">
-              <path d="M580 205 l9 9 -9 9 -9 -9z"/><path d="M640 235 l9 9 -9 9 -9 -9z"/><path d="M660 180 l9 9 -9 9 -9 -9z"/>
-              <text x="620" y="275" font-size="11" font-weight="800" fill="#2EF2C4" stroke="none" text-anchor="middle">EVENT</text>
+            <g class="node n-trigger" data-team="B">
+              <rect x="335" y="222" width="50" height="46" fill="rgba(46,242,196,.08)" stroke="#2EF2C4" stroke-width="1.4"/>
+              <text x="360" y="214" font-size="10" font-weight="800" fill="#2EF2C4" text-anchor="middle">TRIGGER</text>
             </g>
-            <g class="node n-nav">
-              <circle cx="650" cy="95" r="16" fill="none" stroke="#2EF2C4" stroke-width="1.4" filter="url(#glow)"/>
-              <path d="M643 102 L650 84 L657 102 L650 97z" fill="#2EF2C4"/>
-              <text x="650" y="64" font-size="11" font-weight="800" fill="#2EF2C4" text-anchor="middle">NEXT POINT</text>
+            <g class="node n-event" data-team="A" stroke="#2EF2C4" stroke-width="1.4" fill="#000">
+              <path d="M305 113 l8 8 -8 8 -8 -8z"/><path d="M415 113 l8 8 -8 8 -8 -8z"/><path d="M415 40 l8 8 -8 8 -8 -8z"/>
+              <text x="360" y="132" font-size="10" font-weight="800" fill="#2EF2C4" stroke="none" text-anchor="middle">EVENT</text>
             </g>
-            <g class="start"><circle cx="110" cy="260" r="5" fill="#fff"/><text x="122" y="264" font-size="11" fill="#fff">START</text></g>
-            <circle class="pulse" cx="110" cy="260" r="6" fill="#2EF2C4" filter="url(#glow)" opacity="0"/>
+            <g class="node n-event" data-team="B" stroke="#2EF2C4" stroke-width="1.4" fill="#000">
+              <path d="M305 273 l8 8 -8 8 -8 -8z"/><path d="M415 273 l8 8 -8 8 -8 -8z"/><path d="M415 200 l8 8 -8 8 -8 -8z"/>
+              <text x="360" y="292" font-size="10" font-weight="800" fill="#2EF2C4" stroke="none" text-anchor="middle">EVENT</text>
+            </g>
+            <g class="node n-nav" data-team="A">
+              <circle cx="475" cy="50" r="11" fill="#000" stroke="#2EF2C4" stroke-width="1.4" filter="url(#glow)"/>
+              <path d="M469 44 L483 50 L469 56 L472 50z" fill="#2EF2C4"/>
+              <text x="475" y="32" font-size="10" font-weight="800" fill="#2EF2C4" text-anchor="middle">NAV</text>
+            </g>
+            <g class="node n-nav" data-team="B">
+              <circle cx="475" cy="210" r="11" fill="#000" stroke="#2EF2C4" stroke-width="1.4" filter="url(#glow)"/>
+              <path d="M469 204 L483 210 L469 216 L472 210z" fill="#2EF2C4"/>
+              <text x="475" y="192" font-size="10" font-weight="800" fill="#2EF2C4" text-anchor="middle">NAV</text>
+            </g>
+            <circle class="meet" cx="625" cy="175" r="44" fill="none" stroke="#2EF2C4" stroke-width="1.4" filter="url(#glow)" opacity="0"/>
+            <text class="meet-label" x="625" y="252" font-size="12" font-weight="800" fill="#2EF2C4" text-anchor="middle" opacity="0">두 팀 합류</text>
+            <text x="44" y="56" font-size="10" font-weight="800" fill="#2EF2C4">TEAM A · 2인</text>
+            <text x="44" y="216" font-size="10" font-weight="800" fill="#fff">TEAM B · 2인</text>
+            <g class="runners">
+              <circle class="ta" cx="80" cy="110" r="6" fill="#2EF2C4" filter="url(#glow)"/>
+              <circle class="ta" cx="80" cy="110" r="6" fill="#2EF2C4" filter="url(#glow)"/>
+              <circle class="tb" cx="80" cy="270" r="6" fill="#fff"/>
+              <circle class="tb" cx="80" cy="270" r="6" fill="#fff"/>
+            </g>
+            <text x="380" y="322" font-size="11" fill="#8a8a8a" text-anchor="middle">두 팀은 다른 구역에서 출발하고, 각자의 트리거와 이벤트를 지나 마지막 공간에서 만납니다.</text>
           </svg>
         </div>
         <div class="dive__text">
-          <p class="dive__label">TRIGGER · EVENT · NAV</p>
-          <h4>레벨 안에 이벤트를 직접 배치했습니다</h4>
+          <p class="dive__label"><span class="dive__no">03</span>TRIGGER · EVENT · NAV</p>
+          <h4>언리얼 엔진 내 레벨 디자인을 직접 작업했습니다</h4>
           <ol class="steps">
             <li><b>TRIGGER</b>플레이어가 트리거 구역에 들어서면 이벤트가 시작됩니다.</li>
             <li><b>EVENT</b>이벤트 위치와 속성 값을 언리얼 에디터에서 직접 배치하고 조정했습니다.</li>
             <li><b>NAV</b>이벤트가 끝나면 다음 지점을 가리키는 네비가 켜집니다.</li>
           </ol>
-          <p>동선을 벗어나는 경우의 예외 처리도 함께 설계했습니다. 전투 수치는 테이블로 분리해, QA 중에 담당자가 바로 고쳐 볼 수 있게 했습니다.</p>
+          <p>두 팀은 서로 다른 구역에서 출발해 각자 트리거와 이벤트를 거친 뒤, 마지막 공간에서 합류합니다. 동선을 벗어나는 경우의 예외 처리도 함께 설계했습니다. 전투 수치는 테이블로 분리해, QA 중에 담당자가 바로 고쳐 볼 수 있게 했습니다.</p>
         </div>
       </article>
 
@@ -313,11 +364,22 @@
             <div class="wrist__side">
               <img src="assets/img/vive-side.png" alt="손목을 90도 꺾은 VIVE 컨트롤러" width="516" height="193">
               <svg class="wrist__nav" viewBox="0 0 200 170" aria-hidden="true">
+                <defs><linearGradient id="arrowTop" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#1fd9ad"/><stop offset="1" stop-color="#8affe3"/></linearGradient></defs>
                 <path class="wrist__beam" d="M86 170 L114 170 L180 70 L20 70 Z" fill="url(#beam)"/>
-                <g class="wrist__panel" filter="url(#glow)">
-                  <rect x="30" y="4" width="140" height="62" fill="rgba(0,0,0,.6)" stroke="#2EF2C4" stroke-width="1.6"/>
-                  <path d="M88 52 L100 16 L112 52 L100 44 Z" fill="#2EF2C4"/>
-                  <text x="100" y="62" font-size="0"></text>
+                <g class="wrist__panel">
+                  <ellipse cx="100" cy="72" rx="72" ry="9" fill="none" stroke="#2EF2C4" stroke-width="1.2" opacity=".7"/>
+                  <ellipse class="wrist__shadow" cx="100" cy="72" rx="52" ry="5" fill="#2EF2C4" opacity=".22"/>
+                  <g class="wrist__arrow" filter="url(#glow)">
+                    <path d="M161.2 24.3 L124.8 15.9 L124.8 28.9 L161.2 37.3Z" fill="#0a4a3d"/>
+                    <path d="M124.8 15.9 L115.2 26.5 L115.2 39.5 L124.8 28.9Z" fill="#0a4a3d"/>
+                    <path d="M115.2 26.5 L44.1 37.8 L44.1 50.8 L115.2 39.5Z" fill="#0a4a3d"/>
+                    <path d="M94.9 49.0 L161.2 24.3 L161.2 37.3 L94.9 62.0Z" fill="#17a988"/>
+                    <path d="M104.5 38.3 L94.9 49.0 L94.9 62.0 L104.5 51.3Z" fill="#17a988"/>
+                    <path d="M44.1 37.8 L33.4 49.6 L33.4 62.6 L44.1 50.8Z" fill="#17a988"/>
+                    <path d="M33.4 49.6 L104.5 38.3 L104.5 51.3 L33.4 62.6Z" fill="#17a988"/>
+                    <path d="M33.4 49.6 L104.5 38.3 L94.9 49.0 L161.2 24.3 L124.8 15.9 L115.2 26.5 L44.1 37.8Z" fill="url(#arrowTop)"/>
+                    <path d="M33.4 49.6 L104.5 38.3 L94.9 49.0 L161.2 24.3 L124.8 15.9 L115.2 26.5 L44.1 37.8Z" fill="none" stroke="#b9fff0" stroke-width=".8" opacity=".8"/>
+                  </g>
                 </g>
               </svg>
             </div>
@@ -325,7 +387,7 @@
           <p class="wrist__angle" aria-hidden="true"><span data-angle>0</span>°</p>
         </div>
         <div class="dive__text wrist__text">
-          <p class="dive__label">WRIST NAV</p>
+          <p class="dive__label"><span class="dive__no">04</span>WRIST NAV</p>
           <h4>손목을 꺾으면 컨트롤러 위에 네비가 뜹니다</h4>
           <p>게임에서 맵 버튼을 누르던 행동을 실감형 콘텐츠의 몸 동작으로 옮겼습니다. 화면에 네비 UI를 상시로 띄우지 않고, 컨트롤러를 90° 꺾을 때만 그 위에 방향을 출력합니다.</p>
           <p>길을 확인하는 순간에도 몰입이 이어지게 하려는 의도였고, 현장에서 호평을 받았습니다.</p>
@@ -341,42 +403,50 @@
         <h2 class="h2"><span class="line"><span>#ALICE</span></span><span class="line"><span>VR COASTER</span></span></h2>
         <div class="case__side">
           <p class="case__meta">코엑스 체험관 · 2축 모션 · 9인 팀</p>
-          <p class="case__lead">이상한 나라의 앨리스를 모티프로 한 VR 롤러코스터입니다. 컨셉, 씬 레퍼런스, 코스, 사운드를 혼자 기획했고, 2개월 만에 출시했습니다.</p>
+          <p class="case__lead">이상한 나라의 앨리스를 모티프로 한 VR 롤러코스터입니다. 컨셉, 씬 레퍼런스, 코스, 사운드 기획에 참여했고, 2개월 만에 출시했습니다.</p>
+          <dl class="spec">
+            <div><dt>ENGINE</dt><dd>Unreal Engine</dd></div>
+            <div><dt>PLATFORM</dt><dd>VR HMD · 2축 모션 시뮬레이터</dd></div>
+            <div><dt>ROLE</dt><dd>콘텐츠 기획(컨셉·씬 레퍼런스·코스·사운드), PM 겸임</dd></div>
+          </dl>
         </div>
       </header>
     </div>
 
-    <div class="player" data-player>
-      <div class="player__frame">
-        <video class="player__video" src="assets/video/alice-full.mp4" poster="assets/video/alice-poster.jpg" preload="none" playsinline muted></video>
-        <button class="player__play" type="button" data-magnetic aria-label="전체 영상 재생">
-          <span class="player__ring"></span>
-          <span class="player__label">PLAY</span>
-        </button>
-        <p class="player__note">4:06 · 인게임 녹화 · 무음</p>
-      </div>
-    </div>
-
     <div class="wrap">
-      <ul class="facts">
-        <li><strong data-count-to="2">2</strong><span>축 모션 시뮬레이터</span></li>
-        <li><strong data-count-to="70">70</strong><span>fps 유지</span></li>
-        <li><strong data-count-to="9">9</strong><span>인 팀 · 기획&nbsp;1, 디자인&nbsp;5, 개발&nbsp;3</span></li>
-        <li><strong data-count-to="2">2</strong><span>개월 만에 출시</span></li>
-      </ul>
+      <div class="alice__body">
+        <div class="player" data-player>
+          <div class="player__frame">
+            <video class="player__video" src="assets/video/alice-full.mp4" poster="assets/video/alice-poster.jpg" preload="none" playsinline muted></video>
+            <button class="player__play" type="button" data-magnetic aria-label="전체 영상 재생">
+              <span class="player__ring"></span>
+              <span class="player__label">PLAY</span>
+            </button>
+            <p class="player__note">4:06 · 인게임 녹화 · 무음</p>
+          </div>
+        </div>
+        <div class="alice__side">
+          <ul class="facts">
+            <li><strong data-count-to="2">2</strong><span>축 모션 시뮬레이터</span></li>
+            <li><strong data-count-to="70">70</strong><span>fps 유지</span></li>
+            <li><strong data-count-to="9">9</strong><span>인 팀 · 기획&nbsp;1, 디자인&nbsp;5, 개발&nbsp;3</span></li>
+            <li><strong data-count-to="2">2</strong><span>개월 만에 출시</span></li>
+          </ul>
 
-      <div class="course">
-        <p class="dive__label">COURSE</p>
-        <p class="course__hint">장면을 누르면 영상이 그 지점부터 재생됩니다.</p>
-        <ol class="course__strip">
-          <li><button type="button" data-seek="3"><img src="assets/img/scenes/s1.jpg" alt="" loading="lazy" width="960" height="540"><span>00:03</span></button></li>
-          <li><button type="button" data-seek="20"><img src="assets/img/scenes/s2.jpg" alt="" loading="lazy" width="960" height="540"><span>00:20</span></button></li>
-          <li><button type="button" data-seek="36"><img src="assets/img/scenes/s3.jpg" alt="" loading="lazy" width="960" height="540"><span>00:36</span></button></li>
-          <li><button type="button" data-seek="76"><img src="assets/img/scenes/s4.jpg" alt="" loading="lazy" width="960" height="540"><span>01:16</span></button></li>
-          <li><button type="button" data-seek="140"><img src="assets/img/scenes/s5.jpg" alt="" loading="lazy" width="960" height="540"><span>02:20</span></button></li>
-          <li><button type="button" data-seek="165"><img src="assets/img/scenes/s6.jpg" alt="" loading="lazy" width="960" height="540"><span>02:45</span></button></li>
-          <li><button type="button" data-seek="230"><img src="assets/img/scenes/s7.jpg" alt="" loading="lazy" width="960" height="540"><span>03:50</span></button></li>
-        </ol>
+          <div class="course">
+            <p class="dive__label">COURSE</p>
+            <p class="course__hint">장면을 누르면 영상이 그 지점부터 재생됩니다.</p>
+            <ol class="course__strip">
+              <li><button type="button" data-seek="3"><img src="assets/img/scenes/s1.jpg" alt="" loading="lazy" width="960" height="540"><span>00:03</span></button></li>
+              <li><button type="button" data-seek="20"><img src="assets/img/scenes/s2.jpg" alt="" loading="lazy" width="960" height="540"><span>00:20</span></button></li>
+              <li><button type="button" data-seek="36"><img src="assets/img/scenes/s3.jpg" alt="" loading="lazy" width="960" height="540"><span>00:36</span></button></li>
+              <li><button type="button" data-seek="76"><img src="assets/img/scenes/s4.jpg" alt="" loading="lazy" width="960" height="540"><span>01:16</span></button></li>
+              <li><button type="button" data-seek="140"><img src="assets/img/scenes/s5.jpg" alt="" loading="lazy" width="960" height="540"><span>02:20</span></button></li>
+              <li><button type="button" data-seek="165"><img src="assets/img/scenes/s6.jpg" alt="" loading="lazy" width="960" height="540"><span>02:45</span></button></li>
+              <li><button type="button" data-seek="230"><img src="assets/img/scenes/s7.jpg" alt="" loading="lazy" width="960" height="540"><span>03:50</span></button></li>
+            </ol>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -389,6 +459,10 @@
         <div class="case__side">
           <p class="case__meta">2023.08 ~ 2023.12 · 한전교육원 납품 · 5인 팀</p>
           <p class="case__lead">VR 안전교육용 관제 허브입니다. 강사 한 명이 최대 20대의 VR 기기를 관제하도록 콘솔을 기획했습니다. 외부 VR 콘텐츠 20종은 통합 런처 하나로 묶고, 한전에서 발급한 ID로만 들어오게 했습니다.</p>
+          <dl class="spec">
+            <div><dt>PLATFORM</dt><dd>VR 기기 20대 · 강사용 관제 콘솔 · 통합 런처</dd></div>
+            <div><dt>ROLE</dt><dd>관제 콘솔, 통합 런처, ID 접근 제어 기획</dd></div>
+          </dl>
         </div>
       </header>
 
@@ -407,8 +481,8 @@
             </g>
             <path class="bus" data-draw d="M240 190 H290" fill="none" stroke="#2EF2C4" stroke-width="1.2"/>
             <path class="bus" data-draw d="M290 40 V340" fill="none" stroke="#2EF2C4" stroke-width="1.2" opacity=".6"/>
-            <g class="devices"></g>
             <path class="mirror" d="" fill="none" stroke="#2EF2C4" stroke-width="2" filter="url(#glow)"/>
+            <g class="devices"></g>
             <g font-size="11" fill="#8a8a8a">
               <text x="30" y="316">통합 런처 · 외부 콘텐츠 20종</text>
               <text x="30" y="336">한전 발급 ID로 접근</text>
@@ -432,6 +506,10 @@
         <div class="case__side">
           <p class="case__meta">2024.07 ~ 2025.11 · 전략기획실</p>
           <p class="case__lead">헬스케어 디바이스 서비스의 운영 어드민을 기획했습니다.</p>
+          <dl class="spec">
+            <div><dt>PLATFORM</dt><dd>웹 어드민 (B2B·B2G SaaS)</dd></div>
+            <div><dt>ROLE</dt><dd>운영 어드민 시스템 기획 (권한·테넌트·디바이스·과금)</dd></div>
+          </dl>
         </div>
       </header>
       <div class="rbac">
@@ -493,9 +571,9 @@
           <p>게이미피케이션 교육 앱을 Unity로 개발했습니다. 두 번의 인턴 기간 동안 빌드까지 완료했습니다.</p>
         </article>
         <article class="card" data-spot>
-          <p class="card__meta">개인 기획</p>
-          <h3>무협디펜스 · 스타디펜스</h3>
-          <p>「문파대난」은 7개 문파와 7단계 무위 등급으로 성장 구조를 짠 디펜스 게임 기획입니다. 스타디펜스는 시장과 설계를 분석했습니다.</p>
+          <p class="card__meta">2024.07 ~ 2025.11 · Flutter 앱 · 측정 기기</p>
+          <h3>BIOPOP ELIXIR</h3>
+          <p>NIR 분광센서로 바늘 없이 혈당을 측정하는 헬스케어 SW/HW 서비스입니다. 앱 시스템과 서비스 운영 정책을 기획했고, CES 2025 시연 부스에서 970명을 응대했습니다.</p>
         </article>
       </div>
     </div>
@@ -506,11 +584,11 @@
     <div class="wrap about__grid">
       <h2 class="h2"><span class="line"><span>#ABOUT</span></span></h2>
       <div>
-        <p class="about__lead">모바일 퍼즐과 교육 게임으로 시작해, VR 체험관과 교육용 VR 콘텐츠를 기획했습니다. 최근에는 헬스케어 서비스의 운영 도구를 설계했습니다.</p>
+        <p class="about__lead">AR/VR을 전공하고 몰입형 VR 콘텐츠를 기획했습니다. 체험관 VR과 교육용 VR을 만들었고, 관제 콘솔부터 서비스 어드민까지 여러 운영관리 시스템을 기획해 왔습니다.</p>
         <ol class="timeline">
           <li><span>2021.04 ~ 2022.05</span><strong>알파스튜디오</strong><em>Magnet Friends, Hello Planet</em></li>
           <li><span>2023.01 ~ 2024.05</span><strong>예쉬컴퍼니</strong><em>계룡 병영체험관 VR, 엘리스 VR 롤러코스터, 한전 VR 관제 허브</em></li>
-          <li><span>2024.07 ~ 2025.11</span><strong>BIOPOP</strong><em>전략기획실 · 운영 어드민</em></li>
+          <li><span>2024.07 ~ 2025.11</span><strong>BIOPOP</strong><em>ELIXIR 서비스 · 운영 어드민</em></li>
           <li><span>학력</span><strong>한림대학교</strong><em>SW융합대학 콘텐츠IT전공</em></li>
         </ol>
       </div>
