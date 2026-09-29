@@ -91,24 +91,70 @@
     });
   });
 
-  // 계룡 4종: 도면이 포인터를 따라 가로로 움직이고, 움직임 방향으로 살짝 기운다
-  var vr4 = $('.vr4');
-  if (vr4 && window.matchMedia('(hover: hover)').matches) {
-    $$('.vr4 li', vr4).forEach(function (li) {
-      var img = $('.vr4__img', li), lastX = null;
-      if (!img) return;
-      li.addEventListener('pointermove', function (e) {
-        var ob = vr4.getBoundingClientRect(), lb = li.getBoundingClientRect(), w = img.getBoundingClientRect().width;
-        var x = e.clientX - lb.left - w / 2;
-        x = Math.max(ob.left - lb.left, Math.min(ob.right - lb.left - w, x));
-        var rot = lastX === null ? 0 : Math.max(-4, Math.min(4, (e.clientX - lastX) * .4));
-        lastX = e.clientX;
-        li.style.setProperty('--px', x + 'px');
-        li.style.setProperty('--rot', rot + 'deg');
-      });
-      li.addEventListener('pointerleave', function () { lastX = null; li.style.setProperty('--rot', '0deg'); });
+  // 계룡 스테이지: 4종 도면을 차례로 그리고, 아래 탭에 진행 막대를 채운다. 탭에 올리면 그 도면에서 멈춘다
+  (function () {
+    var stage = $('.stage'), vr4 = $('.vr4');
+    if (!stage || !vr4) return;
+    var arts = $$('.st-art', stage), tabs = $$('.vr4 li', vr4);
+    var lb = $('.st-lb', stage), no = $('.st-no', stage);
+    var LABELS = ['ARMY · SIDE VIEW', 'NAVY · SIDE VIEW', 'AIR FORCE · TOP VIEW', 'DMZ · 4 PLAYERS'];
+    var DUR = [4, 4, 4, 6.5];
+    var motion = hasGsap && !reduce;
+    var cur = 0, held = false, active = false, tl = null;
+
+    function show(i) {
+      cur = i;
+      arts.forEach(function (a, k) { a.classList.toggle('is-on', k === i); });
+      tabs.forEach(function (t, k) { t.classList.toggle('is-on', k === i); });
+      stage.classList.toggle('is-dmz', i === 3);
+      lb.textContent = LABELS[i];
+      no.textContent = '0' + (i + 1) + ' / 04';
+      if (!motion) return;
+      if (tl) tl.kill();
+      gsap.set($$('.vr4__prog', vr4), { scaleX: 0 });
+      var art = arts[i];
+      tl = gsap.timeline({ paused: !active });
+      tl.fromTo($$('.d', art), { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.1, ease: 'power2.out', stagger: .1 }, 0);
+      if (i === 3) {
+        var ta = $$('.ta', art), tb = $$('.tb', art);
+        tl.fromTo('#st-clip rect', { attr: { height: 0 } }, { attr: { height: 146 }, duration: .8, ease: 'expo.out' }, .6)
+          .fromTo(ta.concat(tb), { opacity: 0 }, { opacity: 1, duration: .3 }, .9);
+        // [시작점, 꺾이는 점, 도착점]: 두 명씩 한 팀이 가로로 간 뒤 직각으로 꺾어 가운데로 들어간다
+        [[ta[0], 200, 34, 126, 34, 126, 84], [ta[1], 210, 34, 126, 34, 126, 74],
+         [tb[0], 40, 150, 114, 150, 114, 98], [tb[1], 30, 150, 114, 150, 114, 108]].forEach(function (d) {
+          tl.set(d[0], { attr: { cx: d[1], cy: d[2] } }, 0)
+            .to(d[0], { attr: { cx: d[3] }, duration: 1.3, ease: 'power1.inOut' }, 1.3)
+            .to(d[0], { attr: { cy: d[6] }, duration: .9, ease: 'power1.inOut' }, 2.65);
+        });
+      }
+      if (held) { gsap.set($('.vr4__prog', tabs[i]), { scaleX: 1 }); return; }
+      tl.fromTo($('.vr4__prog', tabs[i]), { scaleX: 0 }, { scaleX: 1, duration: DUR[i], ease: 'none' }, 0)
+        .call(function () { show((cur + 1) % 4); });
+    }
+
+    tabs.forEach(function (t, k) {
+      t.addEventListener('click', function () { held = false; show(k); });
+      t.addEventListener('pointerenter', function (e) { if (e.pointerType !== 'mouse') return; held = true; show(k); });
     });
-  }
+    vr4.addEventListener('pointerleave', function (e) { if (e.pointerType !== 'mouse' || !held) return; held = false; show(cur); });
+    if (!motion) return;
+
+    var scan = gsap.fromTo($('.st-scan', stage), { attr: { y: 0 } }, { attr: { y: 298 }, duration: 3.2, ease: 'none', repeat: -1, paused: true });
+    // 포인터를 따라 도면이 살짝 따라 움직인다
+    if (finePointer) {
+      var par = $('.st-par', stage);
+      stage.addEventListener('pointermove', function (e) {
+        var b = stage.getBoundingClientRect();
+        gsap.to(par, { x: ((e.clientX - b.left) / b.width - .5) * 16, y: ((e.clientY - b.top) / b.height - .5) * 10, duration: .6, ease: 'power2.out' });
+      });
+      stage.addEventListener('pointerleave', function () { gsap.to(par, { x: 0, y: 0, duration: .8, ease: 'power2.out' }); });
+    }
+    show(0);
+    ScrollTrigger.create({ trigger: stage, start: 'top 85%', end: 'bottom top', onToggle: function (st) {
+      active = st.isActive;
+      if (active) { if (tl) tl.play(); scan.play(); } else { if (tl) tl.pause(); scan.pause(); }
+    } });
+  })();
 
   // 한전 미러링 경로
   var mirror = $('#svg-kepco .mirror');

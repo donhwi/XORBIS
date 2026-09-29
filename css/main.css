@@ -218,34 +218,35 @@ h1, h2, h3, h4, p { margin: 0; }
 
 .vr4 { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); }
 .vr4 li { position: relative; display: flex; flex-direction: column; gap: 6px; padding: 26px 22px 30px 0; border-right: 1px solid var(--line); }
-/* 호버하면 해당 콘텐츠의 홀로그램 도면이 포인터를 따라 떠오르며 선이 그려진다 */
-.vr4__img {
-  position: absolute; left: 0; bottom: calc(100% + 14px); z-index: 5; width: clamp(260px, 24vw, 360px); height: auto; aspect-ratio: 4 / 3;
-  border: 1px solid var(--mint); pointer-events: none; overflow: hidden;
-  opacity: 0; clip-path: inset(100% 0 0 0);
-  transform: translate3d(var(--px, 0px), 0, 0) rotate(var(--rot, 0deg));
-  transition: clip-path .6s var(--ease-out), opacity .25s, transform .4s var(--ease-out);
-}
-.vr4__img .bg { fill: #040a08; }
-.vr4__img .grid { stroke: rgba(46, 242, 196, .09); stroke-width: 1; fill: none; }
-.vr4__img .lb { fill: var(--mint); font-family: var(--font-display); font-weight: 700; font-size: 9px; letter-spacing: .12em; }
-.vr4__img .d { fill: none; stroke: var(--mint); stroke-width: 1.4; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset .9s var(--ease-out) calc(.15s + var(--i) * .12s); }
-.vr4__img .art { filter: drop-shadow(0 0 3px rgba(46, 242, 196, .55)); }
-.vr4__img .dots circle { opacity: 0; transition: opacity .4s 1s; }
-.vr4__img .ta { fill: var(--mint); }
-.vr4__img .tb { fill: #fff; }
-.vr4__img .scan { fill: var(--mint); opacity: 0; }
-.vr4 li:hover .vr4__img { opacity: 1; clip-path: inset(0 0 0 0); }
-.vr4 li:hover .vr4__img .d { stroke-dashoffset: 0; }
-.vr4 li:hover .vr4__img .dots circle { opacity: 1; }
-.vr4 li:hover .vr4__img .scan { animation: vr4-scan 2.4s linear .6s infinite; }
-@keyframes vr4-scan { 0% { transform: translateY(0); opacity: .5; } 100% { transform: translateY(180px); opacity: 0; } }
-.vr4 li:hover strong { color: var(--mint); }
-@media (hover: none) {
-  .vr4__img { position: static; width: 100%; opacity: 1; clip-path: none; transform: none; border-color: var(--line); margin-bottom: 8px; }
-  .vr4__img .d { stroke-dashoffset: 0; transition: none; }
-  .vr4__img .dots circle { opacity: 1; }
-}
+/* 계룡 스테이지: 4종 도면이 차례로 그려지고, 아래 탭과 연동된다 */
+.case__stage { margin-bottom: 28px; border: 1px solid rgba(46, 242, 196, .22); background: #030806; }
+.stage { display: block; width: 100%; height: auto; }
+.stage .st-grid { stroke: rgba(46, 242, 196, .07); fill: none; }
+.stage .st-br { stroke: var(--mint); stroke-width: 1.5; fill: none; }
+.stage .st-tick { stroke: rgba(46, 242, 196, .35); fill: none; }
+.stage .st-lb, .stage .st-no, .stage .st-cap { fill: var(--mint); font-family: var(--font-display); font-weight: 700; font-size: 11px; letter-spacing: .14em; }
+.stage .st-no { fill: var(--caption); }
+.stage .st-cap--dim { fill: var(--caption); font-family: inherit; letter-spacing: 0; font-weight: 500; }
+.stage .st-art { opacity: 0; transition: opacity .35s; }
+.stage .st-art.is-on { opacity: 1; }
+.stage .st-glow { filter: drop-shadow(0 0 3px rgba(46, 242, 196, .6)); }
+.stage .d { fill: none; stroke: var(--mint); stroke-width: 1.1; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.stage .rt { stroke-opacity: .55; }
+.stage .ta { fill: var(--mint); }
+/* 스테이지와 설명을 위아래 끝선에 맞추고, 제목은 스테이지 아래에 둔다 */
+.case__head--stage { grid-template-areas: "stage side" "title ."; align-items: stretch; row-gap: 36px; }
+.case__head--stage .case__title { display: contents; }
+.case__head--stage .case__stage { grid-area: stage; margin-bottom: 0; align-self: start; }
+.case__head--stage .h2 { grid-area: title; }
+.case__head--stage .case__side { grid-area: side; display: flex; flex-direction: column; }
+.case__head--stage .case__side .spec { margin-top: auto; margin-bottom: 0; }
+.stage .tb { fill: #fff; }
+.stage .st-shot { opacity: 0; transition: opacity .35s; }
+.stage.is-dmz .st-shot { opacity: 1; }
+.stage .st-scan { fill: var(--mint); opacity: .35; }
+.vr4 li { cursor: pointer; }
+.vr4__prog { position: absolute; top: -1px; left: 0; right: 0; height: 2px; background: var(--mint); transform: scaleX(0); transform-origin: 0 50%; }
+.vr4 li.is-on strong, .vr4 li:hover strong { color: var(--mint); }
 .vr4 li + li { padding-left: 22px; }
 .vr4 li:last-child { border-right: 0; }
 .vr4__no { font-family: var(--font-display); font-weight: 900; font-size: 12px; color: var(--caption); }
@@ -410,6 +411,8 @@ h1, h2, h3, h4, p { margin: 0; }
   .hero__inner { grid-template-columns: 1fr; }
   .skills { width: 100%; max-width: 440px; }
   .case__head, .dive, .dive--wide, .wrist, .rbac, .about__grid, .alice__body { grid-template-columns: 1fr; }
+  .case__head--stage { grid-template-areas: "stage" "title" "side"; row-gap: 28px; }
+  .case__head--stage .case__side .spec { margin-top: 22px; }
   .facts { grid-template-columns: repeat(4, 1fr); }
   .course__strip { grid-template-columns: repeat(7, 1fr); }
   .course__strip img { aspect-ratio: 3 / 4; }
@@ -424,6 +427,8 @@ h1, h2, h3, h4, p { margin: 0; }
   .nav { padding: 16px var(--gutter); }
   .nav__links { gap: 14px; }
   .nav__links a[data-link="how"] { display: none; }
+  .stage .st-lb, .stage .st-no, .stage .st-cap { font-size: 20px; letter-spacing: .08em; }
+  .stage .st-cap--dim { display: none; }
   .nav__links a { font-size: 11px; letter-spacing: .04em; }
   .nav__name { font-size: 13px; }
   .hero__inner { padding-top: 110px; gap: 28px; }
