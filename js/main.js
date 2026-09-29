@@ -317,7 +317,7 @@
     });
 
     /* 본문 블록 올라오기 */
-    gsap.utils.toArray('.case__side, .dive__text, .legend, .rbac__list, .about__lead, .course, .contact__mail, .contact__note').forEach(function (n) {
+    gsap.utils.toArray('.case__side, .dive__text, .legend, .rbac__list, .about__lead, .how__lead, .course, .contact__mail, .contact__note').forEach(function (n) {
       gsap.from(n, { opacity: 0, y: 32, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: n, start: 'top 85%' } });
     });
     ScrollTrigger.batch('.vr4 li, .card, .timeline li, .facts li', {
@@ -559,6 +559,78 @@
         .from(nodes.slice(3), { scale: 0, transformOrigin: '50% 50%', duration: .45, ease: 'back.out(2)', stagger: .06 }, 1.35)
         .from('#svg-rbac .tenants rect', { opacity: 0, duration: .6, stagger: .15 }, 1.5)
         .from('#svg-rbac text', { opacity: 0, duration: .4, stagger: .03 }, 1.2);
+    })();
+
+    /* HOW I WORK ① 노션: 태스크가 컨펌대기에서 한 번 반려됐다가 승인을 받아 완료로 간다 */
+    (function () {
+      var svg = $('#svg-notion'); if (!svg) return;
+      var card = $('.ncard', svg), box = $('.ncard__box', svg), chips = $('.nchips', svg);
+      var no = $('.nstamp--no', svg), ok = $('.nstamp--ok', svg), heads = $$('.nh', svg);
+      function hl(i) { return function () { heads.forEach(function (h) { h.classList.toggle('is-on', +h.getAttribute('data-col') === i); }); }; }
+      function move(x, d) { return { x: x, duration: d || .7, ease: 'power2.inOut' }; }
+      var tl = gsap.timeline({ repeat: -1, repeatDelay: .6, paused: true });
+      tl.set(card, { x: 18, y: 214, opacity: 1 })
+        .set(box, { fill: '#0b0b0b', stroke: '#8a8a8a' })
+        .set([chips, no, ok], { opacity: 0 })
+        .call(hl(0))
+        .to(card, move(144), .6).call(hl(1), null, .9)
+        .to(card, move(270), 1.8).call(hl(2), null, 2.1)
+        .to(box, { stroke: '#2EF2C4', duration: .3 }, 2.3)
+        .to(chips, { opacity: 1, duration: .3 }, 2.5)
+        .to(no, { opacity: 1, duration: .25 }, 3.1)
+        .to(card, move(396), 3.7).call(hl(3), null, 4)
+        .to(no, { opacity: 0, duration: .25 }, 3.8)
+        .to(box, { stroke: '#8a8a8a', duration: .3 }, 3.8)
+        .to(card, move(270), 5).call(hl(2), null, 5.3)
+        .to(box, { stroke: '#2EF2C4', duration: .3 }, 5.4)
+        .to(ok, { opacity: 1, duration: .25 }, 5.8)
+        .to(card, move(522, .8), 6.4).call(hl(4), null, 6.8)
+        .to(ok, { opacity: 0, duration: .25 }, 6.6)
+        .to(box, { fill: '#06221b', duration: .3 }, 7.1)
+        .to({}, { duration: 1.2 })
+        .to(card, { opacity: 0, duration: .4 });
+      ScrollTrigger.create({ trigger: svg, start: 'top 80%', end: 'bottom 10%', onToggle: function (s) { s.isActive ? tl.play() : tl.pause(); } });
+    })();
+
+    /* HOW I WORK ② Jira: 상태가 바뀔 때마다 자동화가 기록과 알림을 남기고, 아래에 데이터가 쌓인다 */
+    (function () {
+      var svg = $('#svg-jira'); if (!svg) return;
+      var tok = $('.jtok', svg), bars = $$('.jbar', svg);
+      function q(s) { return $(s, svg); }
+      function on(cls) { return function () { $$('.jn', svg).forEach(function (n) { n.classList.toggle('is-on', n.classList.contains(cls)); }); }; }
+      function lab(cls) { return function () { $$('.jl', svg).forEach(function (n) { n.classList.toggle('is-on', n.classList.contains(cls)); }); }; }
+      var toasts = $$('.jt', svg);
+      var pop = { opacity: 1, y: 0, duration: .35, ease: 'expo.out' };
+      var tl = gsap.timeline({ repeat: -1, repeatDelay: .6, paused: true });
+      tl.set(toasts, { opacity: 0, y: 6 })
+        .set(bars, { scaleX: 0, transformOrigin: '0% 50%' })
+        .set(tok, { attr: { cx: 48, cy: 84 }, opacity: 1 })
+        .call(on('jn--doing')).call(lab('none'))
+        .to(q('.jt--start'), pop, .4)
+        .call(lab('jl--pr'), null, 1.3)
+        .to(tok, { attr: { cx: 268 }, duration: .8, ease: 'power2.inOut' }, 1.3)
+        .to(q('.jt--start'), { opacity: 0, duration: .3 }, 1.5)
+        .call(on('jn--wait'), null, 2.1)
+        .to(q('.jt--pr'), pop, 2.1)
+        .to(q('.jt--pr'), { opacity: 0, duration: .3 }, 3.2)
+        .call(lab('jl--no'), null, 3.3)
+        .to(tok, { attr: { cy: 244 }, duration: .7, ease: 'power2.inOut' }, 3.3)
+        .call(on('jn--redo'), null, 4)
+        .to(q('.jt--no'), pop, 4)
+        .to(bars[1], { scaleX: .35, duration: .6, ease: 'power2.out' }, 4)
+        .to(q('.jt--no'), { opacity: 0, duration: .3 }, 5.1)
+        .call(lab('jl--re'), null, 5.2)
+        .to(tok, { attr: { cy: 84 }, duration: .7, ease: 'power2.inOut' }, 5.2)
+        .call(on('jn--wait'), null, 5.9)
+        .call(lab('jl--ok'), null, 6.3)
+        .to(tok, { attr: { cx: 488 }, duration: .8, ease: 'power2.inOut' }, 6.3)
+        .call(on('jn--done'), null, 7.1)
+        .to(q('.jt--done'), pop, 7.1)
+        .to(bars[0], { scaleX: .7, duration: .7, ease: 'power2.out' }, 7.1)
+        .to(bars[2], { scaleX: .55, duration: .7, ease: 'power2.out' }, 7.3)
+        .to({}, { duration: 1.4 })
+        .to([tok, q('.jt--done')], { opacity: 0, duration: .4 });
+      ScrollTrigger.create({ trigger: svg, start: 'top 80%', end: 'bottom 10%', onToggle: function (s) { s.isActive ? tl.play() : tl.pause(); } });
     })();
 
     /* CONTACT 배경 */
