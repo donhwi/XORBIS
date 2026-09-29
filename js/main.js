@@ -196,6 +196,13 @@
   }
   if (player) {
     $('.player__play', player).addEventListener('click', function () { playFull(); });
+    var seekBtns = $$('[data-seek]');
+    pVideo.addEventListener('timeupdate', function () {
+      var t = pVideo.currentTime, cur = null;
+      seekBtns.forEach(function (b) { if (+b.getAttribute('data-seek') <= t + .5) cur = b; });
+      seekBtns.forEach(function (b) { b.parentNode.classList.toggle('is-current', b === cur); });
+    });
+    pVideo.addEventListener('ended', function () { seekBtns.forEach(function (b) { b.parentNode.classList.remove('is-current'); }); });
     $$('[data-seek]').forEach(function (b) {
       b.addEventListener('click', function () {
         var t = +b.getAttribute('data-seek');
@@ -325,7 +332,7 @@
       }, .45)
       .to('.hero__for', { opacity: 1, duration: .8, onStart: function () { decode($('.hero__for .decode'), 700); } }, .6)
       .fromTo('.hero__tags li', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .7, stagger: .06 }, .9)
-      .fromTo('.hero__who', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .8 }, 1.1)
+      .fromTo('.hero__tagline', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .8 }, 1.1)
       .fromTo('.skills div', { opacity: 0, x: 24 }, { opacity: 1, x: 0, duration: .8, stagger: .07 }, 1.0);
 
     if (heroVideo) {
@@ -363,12 +370,12 @@
     });
 
     /* 본문 블록 올라오기 */
-    gsap.utils.toArray('.case__side, .dive__text, .legend, .rbac__list, .about__lead, .how__lead, .course, .contact__mail, .contact__note').forEach(function (n) {
+    gsap.utils.toArray('.case__side, .dive__text, .legend, .rbac__list, .about__lead, .how__lead, .course, .contact__list, .contact__note').forEach(function (n) {
       gsap.from(n, { opacity: 0, y: 32, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: n, start: 'top 85%' } });
     });
     ScrollTrigger.batch('.vr4 li, .card, .timeline li, .facts li', {
       start: 'top 88%',
-      onEnter: function (b) { gsap.fromTo(b, { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: .9, ease: 'expo.out', stagger: .08, overwrite: true }); }
+      onEnter: function (b) { gsap.fromTo(b, { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: .9, ease: 'expo.out', stagger: .08, overwrite: true, clearProps: 'transform' }); }
     });
     gsap.set('.vr4 li, .card, .timeline li, .facts li', { opacity: 0 });
 
@@ -414,7 +421,9 @@
           qx((e.clientX - (r.left + r.width / 2)) * .3);
           qy((e.clientY - (r.top + r.height / 2)) * .3);
         });
-        b.addEventListener('pointerleave', function () { gsap.to(b, { x: 0, y: 0, duration: .8, ease: 'elastic.out(1, 0.4)' }); });
+        b.addEventListener('pointerleave', function () { gsap.to(b, { x: 0, y: 0, scale: 1, duration: .8, ease: 'elastic.out(1, 0.4)' }); });
+        b.addEventListener('pointerdown', function () { gsap.to(b, { scale: .96, duration: .16, ease: 'power2.out' }); });
+        b.addEventListener('pointerup', function () { gsap.to(b, { scale: 1, duration: .3, ease: 'power2.out' }); });
       });
     }
 
@@ -431,18 +440,24 @@
         .to(draws.slice(3), { strokeDashoffset: 0, duration: .6, stagger: .1, ease: 'none' }, 1.6)
         .from($$('.labels > *', svg), { opacity: 0, duration: .5, stagger: .08 }, 1.8);
 
-      if (finePointer) {
-        var fig = svg.parentNode;
-        var rx = gsap.quickTo(svg, 'rotationX', { duration: .8, ease: 'power3.out' });
-        var ry = gsap.quickTo(svg, 'rotationY', { duration: .8, ease: 'power3.out' });
+    })();
+
+    /* 포인터를 따라 도식이 살짝 기울어진다 (data-tilt) */
+    if (finePointer) {
+      $$('[data-tilt]').forEach(function (fig) {
+        var isPhoto = fig.classList.contains('wrist__photos');
+        var target = isPhoto ? fig : (fig.querySelector('svg') || fig);
+        var amp = isPhoto ? 6 : 10;
+        var rx = gsap.quickTo(target, 'rotationX', { duration: .8, ease: 'power3.out' });
+        var ry = gsap.quickTo(target, 'rotationY', { duration: .8, ease: 'power3.out' });
         fig.addEventListener('pointermove', function (e) {
           var r = fig.getBoundingClientRect();
-          ry(((e.clientX - r.left) / r.width - .5) * 10);
-          rx(-((e.clientY - r.top) / r.height - .5) * 8);
+          ry(((e.clientX - r.left) / r.width - .5) * amp);
+          rx(-((e.clientY - r.top) / r.height - .5) * amp * .8);
         });
         fig.addEventListener('pointerleave', function () { rx(0); ry(0); });
-      }
-    })();
+      });
+    }
 
     /* DMZ ② 동기화: 먼저 온 팀이 락에서 기다리고, 그동안 적이 다시 생성된다 */
     (function () {
@@ -572,7 +587,7 @@
     });
     ScrollTrigger.batch('.course__strip li', {
       start: 'top 90%',
-      onEnter: function (b) { gsap.fromTo(b, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .9, ease: 'expo.out', stagger: .06 }); }
+      onEnter: function (b) { gsap.fromTo(b, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .9, ease: 'expo.out', stagger: .06, clearProps: 'transform' }); }
     });
     gsap.set('.course__strip li', { opacity: 0 });
 
@@ -647,35 +662,43 @@
       function lab(cls) { return function () { $$('.jl', svg).forEach(function (n) { n.classList.toggle('is-on', n.classList.contains(cls)); }); }; }
       var toasts = $$('.jt', svg);
       var pop = { opacity: 1, y: 0, duration: .35, ease: 'expo.out' };
+      /* 토큰은 화살표 구간에서만 보이고, 상자 안에서는 상자 자체가 켜진다 */
+      function hop(x1, y1, x2, y2, dur) {
+        return gsap.timeline()
+          .set(tok, { attr: { cx: x1, cy: y1 } })
+          .to(tok, { opacity: 1, duration: .15 }, 0)
+          .to(tok, { attr: { cx: x2, cy: y2 }, duration: dur, ease: 'power2.inOut' }, 0)
+          .to(tok, { opacity: 0, duration: .2 }, dur - .15);
+      }
       var tl = gsap.timeline({ repeat: -1, repeatDelay: .6, paused: true });
       tl.set(toasts, { opacity: 0, y: 6 })
         .set(bars, { scaleX: 0, transformOrigin: '0% 50%' })
-        .set(tok, { attr: { cx: 48, cy: 84 }, opacity: 1 })
+        .set(tok, { opacity: 0 })
         .call(on('jn--doing')).call(lab('none'))
         .to(q('.jt--start'), pop, .4)
         .call(lab('jl--pr'), null, 1.3)
-        .to(tok, { attr: { cx: 268 }, duration: .8, ease: 'power2.inOut' }, 1.3)
+        .add(hop(170, 84, 248, 84, .8), 1.3)
         .to(q('.jt--start'), { opacity: 0, duration: .3 }, 1.5)
         .call(on('jn--wait'), null, 2.1)
         .to(q('.jt--pr'), pop, 2.1)
         .to(q('.jt--pr'), { opacity: 0, duration: .3 }, 3.2)
         .call(lab('jl--no'), null, 3.3)
-        .to(tok, { attr: { cy: 244 }, duration: .7, ease: 'power2.inOut' }, 3.3)
+        .add(hop(300, 108, 300, 218, .7), 3.3)
         .call(on('jn--redo'), null, 4)
         .to(q('.jt--no'), pop, 4)
         .to(bars[1], { scaleX: .35, duration: .6, ease: 'power2.out' }, 4)
         .to(q('.jt--no'), { opacity: 0, duration: .3 }, 5.1)
         .call(lab('jl--re'), null, 5.2)
-        .to(tok, { attr: { cy: 84 }, duration: .7, ease: 'power2.inOut' }, 5.2)
+        .add(hop(340, 218, 340, 110, .7), 5.2)
         .call(on('jn--wait'), null, 5.9)
         .call(lab('jl--ok'), null, 6.3)
-        .to(tok, { attr: { cx: 488 }, duration: .8, ease: 'power2.inOut' }, 6.3)
+        .add(hop(390, 84, 468, 84, .8), 6.3)
         .call(on('jn--done'), null, 7.1)
         .to(q('.jt--done'), pop, 7.1)
         .to(bars[0], { scaleX: .7, duration: .7, ease: 'power2.out' }, 7.1)
         .to(bars[2], { scaleX: .55, duration: .7, ease: 'power2.out' }, 7.3)
         .to({}, { duration: 1.4 })
-        .to([tok, q('.jt--done')], { opacity: 0, duration: .4 });
+        .to(q('.jt--done'), { opacity: 0, duration: .4 });
       ScrollTrigger.create({ trigger: svg, start: 'top 80%', end: 'bottom 10%', onToggle: function (s) { s.isActive ? tl.play() : tl.pause(); } });
     })();
 
